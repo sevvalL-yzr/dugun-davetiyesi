@@ -1,0 +1,646 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esra & Doğukan | Düğün Davetiyesi</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink: #191919;
+  --paper: #fffdfb;
+  --gold: #b79a76;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Montserrat, Arial, sans-serif;
+  color: var(--ink);
+}
+
+body {
+  background: #eee9e5;
+  overflow: hidden;
+}
+
+button, input, textarea { font: inherit; }
+
+.stage {
+  width: 100%;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.screen {
+  display: none;
+  width: min(1060px, 100%);
+  height: min(760px, calc(100dvh - 24px));
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid #d6c7bd;
+  box-shadow: 0 16px 55px #30251f20;
+  position: relative;
+  padding: clamp(22px, 4vw, 46px);
+  text-align: center;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen:before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid #d9c8bb;
+  pointer-events: none;
+}
+
+.screen > * {
+  position: relative;
+  z-index: 1;
+}
+
+.kicker {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  line-height: 1.8;
+  color: #665b54;
+}
+
+.script {
+  font-family: "Great Vibes", cursive;
+}
+
+.cover-names {
+  font-size: clamp(56px, 10vw, 105px);
+  line-height: 1.1;
+  margin: 12px 0;
+  color: #3a302c;
+}
+
+.cover-names span {
+  display: block;
+  font-size: .47em;
+}
+
+.cover-date {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(26px, 5vw, 44px);
+  letter-spacing: 3px;
+  margin: 12px 0 24px;
+}
+
+.rule {
+  width: 90px;
+  height: 1px;
+  background: var(--gold);
+  margin: 12px auto 20px;
+}
+
+.copy {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(19px, 3vw, 25px);
+  line-height: 1.5;
+  max-width: 650px;
+  margin: 12px auto 22px;
+}
+
+.names-heading {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(35px, 6vw, 58px);
+  font-weight: 500;
+  margin: 0 0 12px;
+}
+
+.parents {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  font-family: "Cormorant Garamond", serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 10px 0 22px;
+}
+
+.events {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: min(760px, 100%);
+  margin: 10px auto;
+}
+
+.event {
+  border: 1px solid #cfc2b8;
+  padding: 20px 14px;
+}
+
+.event h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  margin: 0 0 12px;
+}
+
+.event-date {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 25px;
+}
+
+.event p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.venue {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.button-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 22px 0 0;
+}
+
+.btn {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: white;
+  padding: 12px 20px;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.btn.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(55px, 100px));
+  gap: 10px;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.countbox {
+  border: 1px solid #cfc2b8;
+  padding: 14px 5px;
+}
+
+.countbox strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 35px;
+  display: block;
+}
+
+.countbox span {
+  font-size: 9px;
+}
+
+.small-copy {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #59534f;
+  max-width: 600px;
+}
+
+.form {
+  width: min(460px, 100%);
+  text-align: left;
+  margin: 14px auto 0;
+}
+
+.choices {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+.choice {
+  border: 1px solid var(--ink);
+  background: white;
+  color: var(--ink);
+  padding: 11px 16px;
+  cursor: pointer;
+}
+
+.choice.selected {
+  background: var(--ink);
+  color: white;
+}
+
+.form label {
+  display: block;
+  font-size: 12px;
+  margin: 12px 0 5px;
+}
+
+.form input, .form textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #aaa;
+  padding: 12px;
+  font-size: 14px;
+  background: white;
+  color: #191919;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.submit {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.status {
+  display: block;
+  min-height: 28px;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  background: #f7f1eb;
+  border: 1px solid #d6c7bd;
+  position: relative;
+  z-index: 3;
+}
+
+.nav-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 18px 0 0;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border: 1px solid #82746b;
+  border-radius: 50%;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dot.active { background: #191919; }
+
+@media (max-width: 650px) {
+  .screen {
+    height: calc(100dvh - 16px);
+    padding: 28px 17px;
+  }
+
+  .events { grid-template-columns: 1fr; }
+  .parents { gap: 22px; font-size: 12px; }
+  .countdown { gap: 5px; }
+  .btn { padding: 11px 13px; font-size: 10px; }
+}
+</style>
+</head>
+
+<body>
+<div class="stage">
+
+<section class="screen active" id="screen0">
+  <p class="kicker">Bu özel günümüzde siz de bizimle olun</p>
+  <div class="cover-names script">Esra<span>and</span>Doğukan</div>
+  <div class="rule"></div>
+  <p class="cover-date">14 KASIM 2026 · CUMARTESİ</p>
+  <p class="copy">Birlikte çıktığımız bu güzel yolculuğun en anlamlı gününde mutluluğumuza ortak olmanız dileğiyle…</p>
+  <div class="button-row">
+    <button class="btn" type="button" data-next>Davetiyeyi Aç ♡</button>
+  </div>
+  <div class="nav-dots">
+    <button class="dot active" data-page="0"></button>
+    <button class="dot" data-page="1"></button>
+    <button class="dot" data-page="2"></button>
+    <button class="dot" data-page="3"></button>
+    <button class="dot" data-page="4"></button>
+  </div>
+</section>
+
+<section class="screen" id="screen1">
+  <p class="kicker">Sevgiyle davetlisiniz</p>
+  <h1 class="names-heading">Esra <span class="script">&</span> Doğukan</h1>
+  <div class="parents">
+    <div>Şengül & Kemal<br>Yazıcı</div>
+    <div>Elmas & Tahsin<br>Yazar</div>
+  </div>
+  <div class="rule"></div>
+  <p class="small-copy">Mutluluğumuzu paylaşacağımız bu özel günde sizleri de aramızda görmekten mutluluk duyarız.</p>
+
+  <div class="events">
+    <article class="event">
+      <h3>Kına Gecesi</h3>
+      <div class="event-date">12 Kasım 2026</div>
+      <p>Perşembe · 19.00–23.00</p>
+      <p class="venue">Pırlanta Organizasyon ve Davet Evi</p>
+      <p>Kaynarca, E-5 Yanyol Caddesi No: 160, Pendik / İstanbul</p>
+    </article>
+    <article class="event">
+      <h3>Düğün</h3>
+      <div class="event-date">14 Kasım 2026</div>
+      <p>Cumartesi · 19.00–23.00</p>
+      <p class="venue">Salon Aura Düğün Salonu</p>
+      <p>Fevzi Çakmak, Numan Sokak No: 6 Üst, Pendik / İstanbul</p>
+    </article>
+  </div>
+
+  <div class="button-row">
+    <button class="btn secondary" data-prev>← Geri</button>
+    <button class="btn" data-next>Geri Sayım →</button>
+  </div>
+  <div class="nav-dots">
+    <button class="dot" data-page="0"></button>
+    <button class="dot active" data-page="1"></button>
+    <button class="dot" data-page="2"></button>
+    <button class="dot" data-page="3"></button>
+    <button class="dot" data-page="4"></button>
+  </div>
+</section>
+
+<section class="screen" id="screen2">
+  <p class="kicker">Birlikte geçireceğimiz o güne</p>
+  <h2 class="names-heading">Geri Sayım</h2>
+  <p class="small-copy">14 Kasım 2026 · Cumartesi · Saat 19.00</p>
+
+  <div class="countdown">
+    <div class="countbox"><strong id="cdDays">0</strong><span>GÜN</span></div>
+    <div class="countbox"><strong id="cdHours">00</strong><span>SAAT</span></div>
+    <div class="countbox"><strong id="cdMinutes">00</strong><span>DAKİKA</span></div>
+    <div class="countbox"><strong id="cdSeconds">00</strong><span>SANİYE</span></div>
+  </div>
+
+  <p class="copy">Her saniye bu güzel güne biraz daha yaklaşıyoruz. ♡</p>
+  <div class="button-row">
+    <button class="btn secondary" data-prev>← Geri</button>
+    <button class="btn" data-next>Yol Tarifine Geç →</button>
+  </div>
+  <div class="nav-dots">
+    <button class="dot" data-page="0"></button>
+    <button class="dot" data-page="1"></button>
+    <button class="dot active" data-page="2"></button>
+    <button class="dot" data-page="3"></button>
+    <button class="dot" data-page="4"></button>
+  </div>
+</section>
+
+<section class="screen" id="screen3">
+  <p class="kicker">Sizi bekliyoruz</p>
+  <h2 class="names-heading">Yol Tarifi</h2>
+  <p class="small-copy">Kına gecesi veya düğün mekânı için aşağıdaki butonlardan birine basarak haritada yol tarifi açabilirsiniz.</p>
+
+  <div class="events">
+    <article class="event">
+      <h3>Kına Gecesi</h3>
+      <p class="venue">Pırlanta Organizasyon ve Davet Evi</p>
+      <p>Kaynarca, E-5 Yanyol Caddesi No: 160, Pendik / İstanbul</p>
+      <a class="btn" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&destination=P%C4%B1rlanta%20Organizasyon%20ve%20Davet%20Evi%2C%20Kaynarca%2C%20Pendik%2C%20%C4%B0stanbul">Kına Yol Tarifi ↗</a>
+    </article>
+    <article class="event">
+      <h3>Düğün</h3>
+      <p class="venue">Salon Aura Düğün Salonu</p>
+      <p>Fevzi Çakmak, Numan Sokak No: 6 Üst, Pendik / İstanbul</p>
+      <a class="btn" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&destination=Salon%20Aura%20D%C3%BC%C4%9F%C3%BCn%20Salonu%2C%20Pendik%2C%20%C4%B0stanbul">Düğün Yol Tarifi ↗</a>
+    </article>
+  </div>
+
+  <div class="button-row">
+    <button class="btn secondary" data-prev>← Geri</button>
+    <button class="btn" data-next>Katılım Bildir →</button>
+  </div>
+  <div class="nav-dots">
+    <button class="dot" data-page="0"></button>
+    <button class="dot" data-page="1"></button>
+    <button class="dot" data-page="2"></button>
+    <button class="dot active" data-page="3"></button>
+    <button class="dot" data-page="4"></button>
+  </div>
+</section>
+
+<section class="screen" id="screen4">
+  <p class="kicker">Yanıtınızı bekliyoruz</p>
+  <h2 class="names-heading">Katılım Bildirimi</h2>
+  <p class="small-copy">Bu özel günümüzde bizimle olup olmayacağınızı bize bildirir misiniz?</p>
+
+  <div class="choices">
+    <button class="choice" type="button" data-answer="Katılıyorum">Katılıyorum</button>
+    <button class="choice" type="button" data-answer="Katılamıyorum">Katılamıyorum</button>
+  </div>
+
+  <form class="form" id="rsvpForm">
+    <label for="guestName">Adınız soyadınız *</label>
+    <input id="guestName" name="guestName" type="text" required maxlength="100" placeholder="Adınız soyadınız">
+
+    <label for="guestCount">Kişi sayısı *</label>
+    <input id="guestCount" name="guestCount" type="number" min="1" max="20" value="1" required>
+
+    <label for="guestNote">Mesajınız (isteğe bağlı)</label>
+    <textarea id="guestNote" name="guestNote" maxlength="1000" placeholder="Esra ve Doğukan'a mesajınız"></textarea>
+
+    <p class="status" id="answerStatus" role="status" aria-live="polite">Adınızı yazıp yanıtınızı seçtikten sonra gönderebilirsiniz.</p>
+    <button class="btn submit" id="submitButton" type="submit">Yanıtı Gönder</button>
+  </form>
+
+  <p class="small-copy">Gönderim başarılı olursa yanıtınız e-posta ile iletilir.</p>
+  <div class="button-row">
+    <button class="btn secondary" data-prev>← Geri</button>
+    <button class="btn secondary" data-page="0">Başa Dön</button>
+  </div>
+  <div class="nav-dots">
+    <button class="dot" data-page="0"></button>
+    <button class="dot" data-page="1"></button>
+    <button class="dot" data-page="2"></button>
+    <button class="dot" data-page="3"></button>
+    <button class="dot active" data-page="4"></button>
+  </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+(() => {
+  const EMAILJS_PUBLIC_KEY = "s7TLsuOcVBRsNJ3jt";
+  const EMAILJS_SERVICE_ID = "service_byhab4h";
+  const EMAILJS_TEMPLATE_ID = "template_mk9no29";
+  const DESTINATION_EMAIL = "yazars051@gmail.com";
+
+  const screens = [...document.querySelectorAll(".screen")];
+  const dots = [...document.querySelectorAll(".dot")];
+  let currentPage = 0;
+  let selectedAnswer = "";
+
+  const statusEl = document.getElementById("answerStatus");
+  const form = document.getElementById("rsvpForm");
+  const submitButton = document.getElementById("submitButton");
+
+  function showPage(index) {
+    if (index < 0 || index >= screens.length) return;
+    currentPage = index;
+
+    screens.forEach((screen, i) => {
+      screen.classList.toggle("active", i === index);
+      screen.scrollTop = 0;
+    });
+
+    dots.forEach(dot => {
+      dot.classList.toggle("active", Number(dot.dataset.page) === index);
+    });
+  }
+
+  document.querySelectorAll("[data-next]").forEach(button => {
+    button.addEventListener("click", () => showPage(currentPage + 1));
+  });
+
+  document.querySelectorAll("[data-prev]").forEach(button => {
+    button.addEventListener("click", () => showPage(currentPage - 1));
+  });
+
+  document.querySelectorAll("[data-page]").forEach(button => {
+    button.addEventListener("click", () => showPage(Number(button.dataset.page)));
+  });
+
+  const weddingTime = new Date("2026-11-14T19:00:00+03:00").getTime();
+
+  function updateCountdown() {
+    const remaining = Math.max(0, weddingTime - Date.now());
+
+    document.getElementById("cdDays").textContent =
+      Math.floor(remaining / 86400000);
+
+    document.getElementById("cdHours").textContent =
+      String(Math.floor(remaining % 86400000 / 3600000)).padStart(2, "0");
+
+    document.getElementById("cdMinutes").textContent =
+      String(Math.floor(remaining % 3600000 / 60000)).padStart(2, "0");
+
+    document.getElementById("cdSeconds").textContent =
+      String(Math.floor(remaining % 60000 / 1000)).padStart(2, "0");
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  document.querySelectorAll("[data-answer]").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedAnswer = button.dataset.answer;
+
+      document.querySelectorAll("[data-answer]").forEach(item => {
+        item.classList.toggle("selected", item === button);
+      });
+
+      statusEl.textContent = "Seçiminiz: " + selectedAnswer;
+    });
+  });
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const name = document.getElementById("guestName").value.trim();
+    const guests = document.getElementById("guestCount").value;
+    const note = document.getElementById("guestNote").value.trim();
+
+    if (!name) {
+      statusEl.textContent = "Lütfen adınızı ve soyadınızı yazın.";
+      document.getElementById("guestName").focus();
+      return;
+    }
+
+    if (!selectedAnswer) {
+      statusEl.textContent = "Lütfen Katılıyorum veya Katılamıyorum seçin.";
+      return;
+    }
+
+    if (!window.emailjs) {
+      statusEl.textContent = "E-posta servisi yüklenmedi. İnternet bağlantınızı kontrol edin.";
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Gönderiliyor…";
+    statusEl.textContent = "Yanıtınız gönderiliyor…";
+
+    try {
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          to_email: DESTINATION_EMAIL,
+          title: "Esra ve Doğukan - Düğün Katılım Yanıtı",
+          name: name,
+          guest_name: name,
+          attendance: selectedAnswer,
+          guests: guests,
+          guest_count: guests,
+          message: note || "Not bırakılmadı.",
+          guest_note: note || "Not bırakılmadı.",
+          email: DESTINATION_EMAIL
+        }
+      );
+
+      statusEl.textContent =
+        "Yanıtınız gönderildi! Teşekkür ederiz. ♡";
+
+      form.reset();
+      selectedAnswer = "";
+
+      document.querySelectorAll("[data-answer]").forEach(item => {
+        item.classList.remove("selected");
+      });
+
+    } catch (error) {
+      console.error("EmailJS hatası:", error);
+
+      statusEl.textContent =
+        "Gönderim başarısız: " +
+        (error.text || error.message || "Bağlantı kurulamadı") +
+        ". Siteyi yayınladıktan sonra EmailJS ayarlarını kontrol edeceğiz.";
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Yanıtı Gönder";
+    }
+  });
+})();
+</script>
+</body>
+</html>

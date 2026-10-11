@@ -332,6 +332,72 @@ button, input, textarea { font: inherit; }
   .countdown { gap: 5px; }
   .btn { padding: 11px 13px; font-size: 10px; }
 }
+  
+/* Telefon ekranlarında 2. sayfanın düzeni */
+@media screen and (max-width: 600px) {
+  #screen1 {
+    padding: 24px 18px;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+
+  #screen1 .names-heading {
+    font-size: 38px;
+    margin: 8px 0;
+  }
+
+  #screen1 .parents {
+    gap: 18px;
+    margin: 8px 0 14px;
+    font-size: 11px;
+  }
+
+  #screen1 .rule {
+    margin: 8px auto 12px;
+  }
+
+  #screen1 .small-copy {
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 6px auto 12px;
+  }
+
+  #screen1 .events {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 6px auto;
+  }
+
+  #screen1 .event {
+    padding: 12px 10px;
+  }
+
+  #screen1 .event h3 {
+    font-size: 23px;
+    margin-bottom: 5px;
+  }
+
+  #screen1 .event-date {
+    font-size: 20px;
+  }
+
+  #screen1 .event p {
+    font-size: 11px;
+    line-height: 1.4;
+    margin: 5px 0;
+  }
+
+  #screen1 .button-row {
+    margin-top: 12px;
+    gap: 8px;
+  }
+
+  #screen1 .nav-dots {
+    margin-top: 12px;
+    padding-bottom: 8px;
+  }
+}
+
 </style>
 </head>
 
